@@ -1,7 +1,12 @@
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 3000;
+const fs = require("fs");
 
-app.get("/", (req, res) => res.send("Hello World!"));
+const html = fs.readFileSync("./announcements.html");
 
-app.listen(port, () => console.log(`Server listening on port ${port}!`));
+const send = require("gmail-send")({
+  user: process.env.GMAIL_USERNAME,
+  pass: process.env.GMAIL_PASSWORD,
+  from: "Regis High School <plzreply@regis.org>",
+  subject: "Announcements for Friday, February 15, 2019",
+  text: html,
+  html
+});
